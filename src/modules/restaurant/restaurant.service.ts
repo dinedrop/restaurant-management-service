@@ -6,34 +6,18 @@ import { IOptions, QueryResult } from "@dinedrop/shared";
 import { IRestaurant, IRestaurantDoc } from "./restaurant.interfaces";
 import Restaurant from "./restaurant.model";
 
-/**
- * Create a restaurant
- * @param {NewCreatedRestaurant} restaurantBody
- * @returns {Promise<IRestaurant>}
- */
 export const createRestaurant = async (
   restaurantBody: IRestaurant
 ): Promise<IRestaurant> => {
   return Restaurant.create(restaurantBody);
 };
 
-/**
- * Register a restaurant
- * @param {NewRegisteredRestaurant} restaurantBody
- * @returns {Promise<IRestaurantDoc>}
- */
 export const registerRestaurant = async (
   restaurantBody: IRestaurant
 ): Promise<IRestaurantDoc> => {
   return Restaurant.create(restaurantBody);
 };
 
-/**
- * Query for restaurants
- * @param {Object} filter - Mongo filter
- * @param {Object} options - Query options
- * @returns {Promise<QueryResult>}
- */
 export const queryRestaurants = async (
   filter: Record<string, any>,
   options: IOptions
@@ -42,30 +26,14 @@ export const queryRestaurants = async (
   return restaurants;
 };
 
-/**
- * Get restaurant by id
- * @param {mongoose.Types.ObjectId} id
- * @returns {Promise<IRestaurantDoc | null>}
- */
 export const getRestaurantById = async (
   id: mongoose.Types.ObjectId
 ): Promise<IRestaurantDoc | null> => Restaurant.findById(id);
 
-/**
- * Get restaurant by email
- * @param {string} email
- * @returns {Promise<IRestaurantDoc | null>}
- */
 export const getRestaurantByEmail = async (
   email: string
 ): Promise<IRestaurantDoc | null> => Restaurant.findOne({ email });
 
-/**
- * Update restaurant by id
- * @param {mongoose.Types.ObjectId} restaurantId
- * @param {UpdateRestaurantBody} updateBody
- * @returns {Promise<IRestaurantDoc | null>}
- */
 export const updateRestaurantById = async (
   restaurantId: mongoose.Types.ObjectId,
   updateBody: IRestaurantDoc
@@ -79,11 +47,6 @@ export const updateRestaurantById = async (
   return restaurant;
 };
 
-/**
- * Delete restaurant by id
- * @param {mongoose.Types.ObjectId} restaurantId
- * @returns {Promise<IRestaurantDoc | null>}
- */
 export const deleteRestaurantById = async (
   restaurantId: mongoose.Types.ObjectId
 ): Promise<IRestaurantDoc | null> => {

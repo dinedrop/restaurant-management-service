@@ -1,6 +1,5 @@
 import express, { Router } from "express";
 
-import { auth } from "@dinedrop/shared";
 import {
   restaurantController,
   restaurantValidation,
@@ -12,12 +11,10 @@ const router: Router = express.Router();
 router
   .route("/")
   .post(
-    auth("manageRestaurants"),
     validate(restaurantValidation.createRestaurant),
     restaurantController.createRestaurant
   )
   .get(
-    auth(),
     validate(restaurantValidation.getRestaurants),
     restaurantController.getRestaurants
   );
@@ -25,17 +22,14 @@ router
 router
   .route("/:restaurantId")
   .get(
-    auth("getRestaurants"),
     validate(restaurantValidation.getRestaurant),
     restaurantController.getRestaurant
   )
   .patch(
-    auth("manageRestaurants"),
     validate(restaurantValidation.updateRestaurant),
     restaurantController.updateRestaurant
   )
   .delete(
-    auth("manageRestaurants"),
     validate(restaurantValidation.deleteRestaurant),
     restaurantController.deleteRestaurant
   );

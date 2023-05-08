@@ -7,6 +7,7 @@ import { IOptions } from "@dinedrop/shared";
 import { catchAsync } from "@dinedrop/shared";
 import { pick } from "@dinedrop/shared";
 import * as restaurantService from "./restaurant.service";
+import * as foodService from "./food.service";
 
 export const createRestaurant = catchAsync(
   async (req: Request, res: Response) => {
@@ -63,3 +64,12 @@ export const deleteRestaurant = catchAsync(
     }
   }
 );
+
+export const getFoodList = catchAsync(async (req: Request, res: Response) => {
+  const foodItem = req.body.foodItem;
+  const result = await foodService.searchFoodByName(foodItem);
+  if (!result) {
+    new ApiError(httpStatus.NOT_FOUND, "Food not found");
+  }
+  res.send(result);
+});
