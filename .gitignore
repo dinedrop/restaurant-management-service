@@ -1,0 +1,44 @@
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Build files
+dist
+
+# Dependency directories
+node_modules
+packages/*/node_modules
+packages/*/build
+
+# Optional eslint cache
+.eslintcache
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# dotenv environment variable files
+.env
+
+# macOS metadata files
+.DS_Store
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Package lock file
+yarn.lock
+package-lock.json
+
+# Production build artifacts
+build/

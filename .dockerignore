@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.DS_Store
+.git
+.gitignore
+README.md
+LICENSE
+*.md
+*.log
+*.config.js
+.vscode
+yarn-error.log
