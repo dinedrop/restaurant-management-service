@@ -1,13 +1,24 @@
 import Joi from "joi";
 
-import { objectId, password } from "@dinedrop/shared";
-import { NewCreatedRestaurant } from "./restaurant.interfaces";
+import { objectId } from "@dinedrop/shared";
+import { IRestaurant } from "./restaurant.interfaces";
 
-const createRestaurantBody: Record<keyof NewCreatedRestaurant, any> = {
-  email: Joi.string().required().email(),
+const createRestaurantBody: Record<keyof IRestaurant, any> = {
   name: Joi.string().required(),
-  cartId: Joi.string().custom(objectId),
-  orderId: Joi.string().custom(objectId),
+  description: Joi.string(),
+  address: Joi.string(),
+  location: Joi.object({
+    type: Joi.string().valid("Point").required(),
+    coordinates: Joi.array().items(Joi.number()).length(2).required(),
+  }),
+  cuisine: Joi.string(),
+  menu: Joi.array().items(
+    Joi.object({
+      name: Joi.string().required(),
+      description: Joi.string(),
+      price: Joi.number().required(),
+    })
+  ),
 };
 
 export const createRestaurant = {
@@ -17,7 +28,6 @@ export const createRestaurant = {
 export const getRestaurants = {
   query: Joi.object().keys({
     name: Joi.string(),
-    role: Joi.string(),
     sortBy: Joi.string(),
     projectBy: Joi.string(),
     limit: Joi.number().integer(),
@@ -35,13 +45,6 @@ export const updateRestaurant = {
   params: Joi.object().keys({
     restaurantId: Joi.required().custom(objectId),
   }),
-  body: Joi.object()
-    .keys({
-      email: Joi.string().email(),
-      password: Joi.string().custom(password),
-      name: Joi.string(),
-    })
-    .min(1),
 };
 
 export const deleteRestaurant = {

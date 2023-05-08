@@ -3,22 +3,17 @@ import mongoose from "mongoose";
 
 import { ApiError } from "@dinedrop/shared";
 import { IOptions, QueryResult } from "@dinedrop/shared";
-import {
-  IRestaurantDoc,
-  NewCreatedRestaurant,
-  NewRegisteredRestaurant,
-  UpdateRestaurantBody,
-} from "./restaurant.interfaces";
+import { IRestaurant, IRestaurantDoc } from "./restaurant.interfaces";
 import Restaurant from "./restaurant.model";
 
 /**
  * Create a restaurant
  * @param {NewCreatedRestaurant} restaurantBody
- * @returns {Promise<IRestaurantDoc>}
+ * @returns {Promise<IRestaurant>}
  */
 export const createRestaurant = async (
-  restaurantBody: NewCreatedRestaurant
-): Promise<IRestaurantDoc> => {
+  restaurantBody: IRestaurant
+): Promise<IRestaurant> => {
   return Restaurant.create(restaurantBody);
 };
 
@@ -28,11 +23,8 @@ export const createRestaurant = async (
  * @returns {Promise<IRestaurantDoc>}
  */
 export const registerRestaurant = async (
-  restaurantBody: NewRegisteredRestaurant
+  restaurantBody: IRestaurant
 ): Promise<IRestaurantDoc> => {
-  if (await Restaurant.isEmailTaken(restaurantBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
-  }
   return Restaurant.create(restaurantBody);
 };
 
@@ -76,17 +68,11 @@ export const getRestaurantByEmail = async (
  */
 export const updateRestaurantById = async (
   restaurantId: mongoose.Types.ObjectId,
-  updateBody: UpdateRestaurantBody
+  updateBody: IRestaurantDoc
 ): Promise<IRestaurantDoc | null> => {
   const restaurant = await getRestaurantById(restaurantId);
   if (!restaurant) {
     throw new ApiError(httpStatus.NOT_FOUND, "Restaurant not found");
-  }
-  if (
-    updateBody.email &&
-    (await Restaurant.isEmailTaken(updateBody.email, restaurantId))
-  ) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email already taken");
   }
   Object.assign(restaurant, updateBody);
   await restaurant.save();
