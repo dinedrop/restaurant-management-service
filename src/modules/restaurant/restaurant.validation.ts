@@ -5,6 +5,7 @@ import { IRestaurant } from "./restaurant.interfaces";
 
 const createRestaurantBody: Record<keyof IRestaurant, any> = {
   name: Joi.string().required(),
+  userId: Joi.string().custom(objectId),
   description: Joi.string(),
   address: Joi.string(),
   location: Joi.object({

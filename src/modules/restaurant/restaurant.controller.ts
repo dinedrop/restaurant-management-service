@@ -2,15 +2,14 @@ import { Request, Response } from "express";
 import httpStatus from "http-status";
 import mongoose from "mongoose";
 
-import { ApiError } from "@dinedrop/shared";
-import { IOptions } from "@dinedrop/shared";
-import { catchAsync } from "@dinedrop/shared";
+import { catchAsync, ApiError, IOptions, IUserRequest } from "@dinedrop/shared";
 import { pick } from "@dinedrop/shared";
 import * as restaurantService from "./restaurant.service";
 import * as foodService from "./food.service";
 
 export const createRestaurant = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: IUserRequest, res: Response) => {
+    req.body.userId = req.user._id;
     const restaurant = await restaurantService.createRestaurant(req.body);
     res.status(httpStatus.CREATED).send(restaurant);
   }
@@ -43,10 +42,11 @@ export const getRestaurant = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const updateRestaurant = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: IUserRequest, res: Response) => {
     if (typeof req.params["restaurantId"] === "string") {
       const restaurant = await restaurantService.updateRestaurantById(
         new mongoose.Types.ObjectId(req.params["restaurantId"]),
+        req.user._id,
         req.body
       );
       res.send(restaurant);
@@ -55,10 +55,11 @@ export const updateRestaurant = catchAsync(
 );
 
 export const deleteRestaurant = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: IUserRequest, res: Response) => {
     if (typeof req.params["restaurantId"] === "string") {
       await restaurantService.deleteRestaurantById(
-        new mongoose.Types.ObjectId(req.params["restaurantId"])
+        new mongoose.Types.ObjectId(req.params["restaurantId"]),
+        req.user._id
       );
       res.status(httpStatus.NO_CONTENT).send();
     }

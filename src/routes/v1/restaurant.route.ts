@@ -4,13 +4,14 @@ import {
   restaurantController,
   restaurantValidation,
 } from "../../modules/restaurant";
-import { validate } from "@dinedrop/shared";
+import { auth, validate } from "@dinedrop/shared";
 
 const router: Router = express.Router();
 
 router
   .route("/")
   .post(
+    auth("manageRestaurant"),
     validate(restaurantValidation.createRestaurant),
     restaurantController.createRestaurant
   )
@@ -26,10 +27,12 @@ router
     restaurantController.getRestaurant
   )
   .patch(
+    auth("manageRestaurant"),
     validate(restaurantValidation.updateRestaurant),
     restaurantController.updateRestaurant
   )
   .delete(
+    auth("manageRestaurant"),
     validate(restaurantValidation.deleteRestaurant),
     restaurantController.deleteRestaurant
   );

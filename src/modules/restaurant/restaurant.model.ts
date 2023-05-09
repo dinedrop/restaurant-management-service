@@ -8,6 +8,10 @@ const restaurantSchema = new mongoose.Schema<IRestaurantDoc, IRestaurantModel>(
     name: { type: String, required: true },
     description: String,
     address: String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+    },
     location: {
       type: {
         type: String,

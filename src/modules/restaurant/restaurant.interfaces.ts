@@ -1,10 +1,11 @@
-import { Document, Model } from "mongoose";
+import { Document, Model, Schema } from "mongoose";
 
 import { QueryResult } from "@dinedrop/shared";
 
 export interface IRestaurant {
   name: string;
   description?: string;
+  userId?: { type: Schema.Types.ObjectId };
   address?: string;
   location: {
     type: string;

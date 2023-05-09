@@ -36,11 +36,19 @@ export const getRestaurantByEmail = async (
 
 export const updateRestaurantById = async (
   restaurantId: mongoose.Types.ObjectId,
+  userId: mongoose.Schema.Types.ObjectId,
   updateBody: IRestaurantDoc
 ): Promise<IRestaurantDoc | null> => {
   const restaurant = await getRestaurantById(restaurantId);
   if (!restaurant) {
     throw new ApiError(httpStatus.NOT_FOUND, "Restaurant not found");
+  }
+  if (!restaurant.userId) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
+  }
+
+  if (restaurant.userId.toString() !== userId.toString()) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
   }
   Object.assign(restaurant, updateBody);
   await restaurant.save();
@@ -48,11 +56,18 @@ export const updateRestaurantById = async (
 };
 
 export const deleteRestaurantById = async (
-  restaurantId: mongoose.Types.ObjectId
+  restaurantId: mongoose.Types.ObjectId,
+  userId: mongoose.Schema.Types.ObjectId
 ): Promise<IRestaurantDoc | null> => {
   const restaurant = await getRestaurantById(restaurantId);
   if (!restaurant) {
     throw new ApiError(httpStatus.NOT_FOUND, "Restaurant not found");
+  }
+  if (!restaurant.userId) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
+  }
+  if (restaurant.userId.toString() !== userId.toString()) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "Unauthorized");
   }
   await restaurant.deleteOne();
   return restaurant;
