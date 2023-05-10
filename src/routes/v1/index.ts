@@ -3,6 +3,7 @@ import express, { Router } from "express";
 import config from "../../config/config";
 import docsRoute from "./swagger.route";
 import restaurantRoute from "./restaurant.route";
+import menuRouter from "./menu.route";
 
 const router = express.Router();
 
@@ -12,6 +13,10 @@ interface IRoute {
 }
 
 const defaultIRoute: IRoute[] = [
+  {
+    path: "/menu",
+    route: menuRouter,
+  },
   {
     path: "/",
     route: restaurantRoute,

@@ -1,15 +1,23 @@
+import { IMenuDoc } from "./menu.interfaces";
 import httpStatus from "http-status";
-import mongoose from "mongoose";
-
 import { ApiError } from "@dinedrop/shared";
 import { IOptions, QueryResult } from "@dinedrop/shared";
 import { IRestaurant, IRestaurantDoc } from "./restaurant.interfaces";
 import Restaurant from "./restaurant.model";
+import Menu from "./menu.model";
+
+export const createMenu = async (menuBody: IMenuDoc): Promise<IMenuDoc> => {
+  return Menu.create(menuBody);
+};
 
 export const createRestaurant = async (
   restaurantBody: IRestaurant
 ): Promise<IRestaurant> => {
-  return Restaurant.create(restaurantBody);
+  const restaurant = await Restaurant.create(restaurantBody);
+  const menu = await Menu.create({ restaurantId: restaurant._id, food: [] });
+  restaurant.menu = menu._id;
+  await restaurant.save();
+  return restaurant;
 };
 
 export const registerRestaurant = async (
@@ -27,7 +35,7 @@ export const queryRestaurants = async (
 };
 
 export const getRestaurantById = async (
-  id: mongoose.Types.ObjectId
+  id: string
 ): Promise<IRestaurantDoc | null> => Restaurant.findById(id);
 
 export const getRestaurantByEmail = async (
@@ -35,8 +43,8 @@ export const getRestaurantByEmail = async (
 ): Promise<IRestaurantDoc | null> => Restaurant.findOne({ email });
 
 export const updateRestaurantById = async (
-  restaurantId: mongoose.Types.ObjectId,
-  userId: mongoose.Schema.Types.ObjectId,
+  restaurantId: string,
+  userId: string,
   updateBody: IRestaurantDoc
 ): Promise<IRestaurantDoc | null> => {
   const restaurant = await getRestaurantById(restaurantId);
@@ -56,8 +64,8 @@ export const updateRestaurantById = async (
 };
 
 export const deleteRestaurantById = async (
-  restaurantId: mongoose.Types.ObjectId,
-  userId: mongoose.Schema.Types.ObjectId
+  restaurantId: string,
+  userId: string
 ): Promise<IRestaurantDoc | null> => {
   const restaurant = await getRestaurantById(restaurantId);
   if (!restaurant) {

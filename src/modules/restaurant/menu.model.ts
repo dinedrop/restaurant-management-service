@@ -23,7 +23,7 @@ const foodSchema = new Schema<IFoodDoc>({
 });
 
 const menuSchema = new Schema<IMenuDoc, IMenuModel>({
-  restaurant: {
+  restaurantId: {
     type: Schema.Types.ObjectId,
     ref: "Restaurant",
     required: true,

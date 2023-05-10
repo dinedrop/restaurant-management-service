@@ -24,13 +24,10 @@ const restaurantSchema = new mongoose.Schema<IRestaurantDoc, IRestaurantModel>(
       },
     },
     cuisine: String,
-    menu: [
-      {
-        name: String,
-        description: String,
-        price: Number,
-      },
-    ],
+    menu: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Menu",
+    },
   },
   {
     timestamps: true,

@@ -1,5 +1,4 @@
 import Joi from "joi";
-
 import { objectId } from "@dinedrop/shared";
 import { IRestaurant } from "./restaurant.interfaces";
 

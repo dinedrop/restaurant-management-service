@@ -10,14 +10,14 @@ const router: Router = express.Router();
 
 router
   .route("/")
+  .get(
+    validate(restaurantValidation.getRestaurants),
+    restaurantController.getRestaurants
+  )
   .post(
     auth("manageRestaurant"),
     validate(restaurantValidation.createRestaurant),
     restaurantController.createRestaurant
-  )
-  .get(
-    validate(restaurantValidation.getRestaurants),
-    restaurantController.getRestaurants
   );
 
 router

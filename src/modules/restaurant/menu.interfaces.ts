@@ -1,5 +1,5 @@
 import { QueryResult } from "@dinedrop/shared";
-import { Model, Types, Document } from "mongoose";
+import { Model, Schema, Document } from "mongoose";
 
 export interface IReviewDoc extends Document {
   name: string;
@@ -18,7 +18,7 @@ export interface IFoodDoc extends Document {
 }
 
 export interface IMenuDoc extends Document {
-  restaurant: Types.ObjectId;
+  restaurantId: Schema.Types.ObjectId;
   food: IFoodDoc[];
 }
 
