@@ -10,7 +10,7 @@ export const addFoodToMenu = async (
   menuId: string,
   food: IFoodDoc
 ): Promise<IMenuDoc> => {
-  const menu = await Menu.findById(menuId);
+  const menu = await Menu.findById(menuId).populate("restaurantId");
   if (!menu) throw new ApiError(httpStatus.NOT_FOUND, "Menu not found!");
   menu.food.push(food);
   return menu.save();
